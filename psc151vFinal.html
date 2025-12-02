@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attribution and Intent vs. Impact | UC Davis Social Psychology</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <style>
+    :root {
+      --color-ucd-teal: #208099;
+      --color-ucd-gold: #E67E22;
+      --color-ucd-green: #27AE60;
+      --color-bg-light: #F5F5F5;
+      --color-surface: #FFFFFF;
+      --color-text-primary: #1F2121;
+      --color-text-secondary: #626C7C;
+      --color-error: #E74C3C;
+      --color-success: #27AE60;
+      --nav-height: 64px;
+      --section-spacing: 40px;
+    }
+
+    /* Base styles */
+    html {
+      font-size: 14px;
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: var(--color-bg-light);
+      color: var(--color-text-primary);
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--color-bg-light);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0 0 16px 0;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: var(--color-ucd-teal);
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      color: var(--color-text-primary);
+      margin-bottom: 24px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: var(--color-text-primary);
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      color: var(--color-text-secondary);
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0 0 16px 0;
+      line-height: 1.6;
+      color: var(--color-text-primary);
+    }
+
+    /* Header/Navigation */
+    header {
+      background: var(--color-surface);
+      border-bottom: 3px solid var(--color-ucd-teal);
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .nav-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--color-ucd-teal);
+    }
+
+    .nav-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+
+    .progress-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-text-secondary);
+      transition: all 0.3s ease;
+    }
+
+    .progress-dot.active {
+      background: var(--color-ucd-teal);
+      transform: scale(1.3);
+    }
+
+    /* Main container */
+    main {
+      padding-top: var(--nav-height);
+      min-height: 100vh;
+    }
+
+    .section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 32px;
+    }
+
+    /* Intro section */
+    .intro-hook {
+      background: linear-gradient(135deg, var(--color-ucd-teal) 0%, #1a6b7f 100%);
+      color: white;
+      padding: 60px 32px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .intro-hook h1 {
+      color: white;
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+    }
+
+    .intro-hook .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      margin-bottom: 24px;
+    }
+
+    .intro-hook p {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0 auto 32px;
+    }
+
+    /* Scenario cards */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .scenario-card {
+      background: var(--color-surface);
+      border: 2px solid #E8E8E8;
+      border-radius: 12px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .scenario-card:hover {
+      border-color: var(--color-ucd-teal);
+      box-shadow: 0 8px 16px rgba(32, 128, 153, 0.12);
+      transform: translateY(-4px);
+    }
+
+    .scenario-card h3 {
+      color: var(--color-ucd-teal);
+      margin-bottom: 12px;
+    }
+
+    .scenario-card.expanded {
+      grid-column: 1 / -1;
+      background: linear-gradient(to right, rgba(32, 128, 153, 0.02), rgba(230, 126, 34, 0.02));
+    }
+
+    .scenario-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+
+    .scenario-card.expanded .scenario-content {
+      max-height: 1000px;
+    }
+
+    .scenario-section {
+      margin: 24px 0;
+      padding: 16px;
+      background: var(--color-bg-light);
+      border-radius: 8px;
+      border-left: 4px solid var(--color-ucd-gold);
+    }
+
+    .scenario-section h4 {
+      color: var(--color-ucd-gold);
+      margin-top: 0;
+    }
+
+    .scenario-section.impact {
+      border-left-color: var(--color-error);
+    }
+
+    .scenario-section.impact h4 {
+      color: var(--color-error);
+    }
+
+    .scenario-section.insight {
+      border-left-color: var(--color-ucd-green);
+      background: rgba(39, 174, 96, 0.04);
+    }
+
+    .scenario-section.insight h4 {
+      color: var(--color-ucd-green);
+    }
+
+    /* Theory section */
+    .theory-box {
+      background: var(--color-surface);
+      border-left: 5px solid var(--color-ucd-teal);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .theory-box h3 {
+      color: var(--color-ucd-teal);
+      margin-top: 0;
+    }
+
+    .theory-box.error-box {
+      border-left-color: var(--color-error);
+    }
+
+    .theory-box.error-box h3 {
+      color: var(--color-error);
+    }
+
+    .theory-box.processing-box {
+      border-left-color: var(--color-ucd-gold);
+    }
+
+    .theory-box.processing-box h3 {
+      color: var(--color-ucd-gold);
+    }
+
+    .theory-box.comparison-box {
+      border-left-color: var(--color-ucd-green);
+    }
+
+    .theory-box.comparison-box h3 {
+      color: var(--color-ucd-green);
+    }
+
+    /* Quiz section */
+    .quiz-container {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    .quiz-question {
+      background: var(--color-surface);
+      border: 2px solid #E8E8E8;
+      border-radius: 12px;
+      padding: 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .quiz-question h3 {
+      color: var(--color-ucd-teal);
+      margin-bottom: 24px;
+    }
+
+    .quiz-question.answered {
+      border-color: var(--color-ucd-green);
+      background: rgba(39, 174, 96, 0.02);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      padding: 12px 16px;
+      border: 2px solid #E8E8E8;
+      border-radius: 8px;
+      background: var(--color-bg-light);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 1rem;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--color-ucd-teal);
+      background: rgba(32, 128, 153, 0.05);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--color-ucd-teal);
+      background: rgba(32, 128, 153, 0.1);
+      font-weight: 500;
+    }
+
+    .quiz-option.correct {
+      border-color: var(--color-success);
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--color-success);
+    }
+
+    .quiz-option.incorrect {
+      border-color: var(--color-error);
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--color-error);
+    }
+
+    .quiz-feedback {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 8px;
+      display: none;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-feedback.correct {
+      background: rgba(39, 174, 96, 0.1);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+    }
+
+    .quiz-feedback.incorrect {
+      background: rgba(231, 76, 60, 0.1);
+      color: var(--color-error);
+      border: 1px solid var(--color-error);
+    }
+
+    .quiz-progress {
+      text-align: center;
+      margin-bottom: 24px;
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* Takeaways section */
+    .takeaways-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .takeaway-card {
+      background: var(--color-surface);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .takeaway-card:nth-child(1) {
+      border-top: 4px solid var(--color-ucd-teal);
+    }
+
+    .takeaway-card:nth-child(2) {
+      border-top: 4px solid var(--color-ucd-gold);
+    }
+
+    .takeaway-card:nth-child(3) {
+      border-top: 4px solid var(--color-ucd-green);
+    }
+
+    .takeaway-card:nth-child(4) {
+      border-top: 4px solid var(--color-error);
+    }
+
+    .takeaway-card h3 {
+      margin-top: 0;
+    }
+
+    .takeaway-card:nth-child(1) h3 {
+      color: var(--color-ucd-teal);
+    }
+
+    .takeaway-card:nth-child(2) h3 {
+      color: var(--color-ucd-gold);
+    }
+
+    .takeaway-card:nth-child(3) h3 {
+      color: var(--color-ucd-green);
+    }
+
+    .takeaway-card:nth-child(4) h3 {
+      color: var(--color-error);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--color-ucd-teal);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1a6b7f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(32, 128, 153, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--color-ucd-gold);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #d67420;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      justify-content: center;
+    }
+
+    /* Reflection section */
+    .reflection-box {
+      background: linear-gradient(135deg, rgba(32, 128, 153, 0.05) 0%, rgba(230, 126, 34, 0.05) 100%);
+      border: 2px solid var(--color-ucd-teal);
+      border-radius: 12px;
+      padding: 32px;
+      margin: 32px 0;
+      text-align: center;
+    }
+
+    .reflection-box h3 {
+      color: var(--color-ucd-teal);
+      margin-top: 0;
+    }
+
+    .reflection-prompt {
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--color-text-secondary);
+      margin: 16px 0;
+    }
+
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--color-ucd-teal);
+      outline-offset: 2px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 0 16px;
+      }
+
+      .nav-title {
+        font-size: 1.1rem;
+      }
+
+      .nav-progress {
+        font-size: 0.75rem;
+      }
+
+      .section-content {
+        padding: 40px 16px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      h2 {
+        font-size: 1.4rem;
+      }
+
+      .intro-hook {
+        padding: 40px 16px;
+      }
+
+      .intro-hook h1 {
+        font-size: 1.8rem;
+      }
+
+      .intro-hook .subtitle {
+        font-size: 1rem;
+      }
+
+      .scenarios-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-title">Social Psychology</div>
+    <div class="nav-progress">
+      <span id="progress-text">Section 1</span>
+      <span class="progress-dot active"></span>
+    </div>
+  </header>
+
+  <main>
+    <!-- Section 1: Welcome -->
+    <section class="section active" id="section-welcome">
+      <div class="intro-hook">
+        <h1>Attribution and Intent vs. Impact</h1>
+        <p class="subtitle">Understanding Why the Same Action Feels Different to Different People</p>
+        <p>Have you ever done something you meant innocently, but someone was hurt? Or assumed someone's actions were rude, only to find out they didn't intend it that way?</p>
+        <p>Welcome to the complex world of attribution and social judgment—where our quick interpretations, good intentions, and the real impact of our actions can diverge in surprising ways.</p>
+        <button class="btn btn-primary" onclick="goToSection('scenarios')">Start Learning</button>
+      </div>
+    </section>
+
+    <!-- Section 2: Scenarios -->
+    <section class="section" id="section-scenarios">
+      <div class="section-content">
+        <h2>Real-World Scenarios: Intent ≠ Impact</h2>
+        <p>Click on each scenario to explore what people commonly assume, the actual impact experienced, and why the gap exists.</p>
+        
+        <div class="scenarios-grid" id="scenarios-grid">
+          <!-- Scenarios will be inserted by JavaScript -->
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="goToSection('welcome')">Back</button>
+          <button class="btn btn-primary" onclick="goToSection('theory')">Continue to Theory</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Theory -->
+    <section class="section" id="section-theory">
+      <div class="section-content">
+        <h2>Understanding the Theory</h2>
+        
+        <div class="theory-box">
+          <h3>🔍 Attribution Theory: How We Explain Behavior</h3>
+          <p>Attribution is how we explain why people do what they do. When something happens—especially something ambiguous or unexpected—our brains quickly generate an explanation.</p>
+          <p><strong>Two types of attributions:</strong></p>
+          <ul>
+            <li><strong>Internal attributions:</strong> "They did it because of their personality/character"</li>
+            <li><strong>External attributions:</strong> "They did it because of their situation/circumstances"</li>
+          </ul>
+          <p><strong>The problem:</strong> We're often biased toward internal attributions, overlooking situational factors.</p>
+        </div>
+
+        <div class="theory-box error-box">
+          <h3>⚠️ The Fundamental Attribution Error</h3>
+          <p>We tend to overestimate someone's personality/disposition and underestimate the power of their situation when explaining their behavior.</p>
+          <p><strong>Real example:</strong> Someone cuts you off in traffic → You assume "They're a reckless driver" (personality) rather than "They might not have seen me / they're rushing to an emergency" (situation).</p>
+          <p><strong>Why it matters:</strong> This bias can lead to judging people harshly for behavior caused by circumstances we're not aware of.</p>
+        </div>
+
+        <div class="theory-box comparison-box">
+          <h3>⚡ Intent vs. Impact: A Critical Distinction</h3>
+          <p><strong>Intent</strong> = what someone meant to do</p>
+          <p><strong>Impact</strong> = what actually happened as a result of their action</p>
+          <p><strong>The key principle:</strong> Intent and impact are often misaligned, especially in ambiguous situations.</p>
+          <p><strong>Example:</strong> A friend makes a joke to be funny (intent: entertain) but the joke relies on a stereotype (impact: makes someone feel stereotyped).</p>
+          <p><strong>Critical insight:</strong> We often prioritize defending intent ("I didn't mean it badly!") rather than addressing impact. But from the person affected's perspective, impact is what matters.</p>
+        </div>
+
+        <div class="theory-box processing-box">
+          <h3>🧠 Automatic vs. Controlled Processing</h3>
+          <p>Much of social judgment happens automatically and quickly. We jump to conclusions because our brains try to be efficient.</p>
+          <p><strong>When is it automatic?</strong> When situations are ambiguous, we're stressed, or making quick judgments.</p>
+          <p><strong>When is it controlled?</strong> When we deliberately slow down, ask questions, and gather more information.</p>
+          <p><strong>Why this matters:</strong> Attributions happen automatically. Correcting them requires deliberate effort and intention.</p>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="goToSection('scenarios')">Back</button>
+          <button class="btn btn-primary" onclick="goToSection('quiz')">Test Your Understanding</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Quiz -->
+    <section class="section" id="section-quiz">
+      <div class="section-content">
+        <h2>Interactive Quiz: Test Your Understanding</h2>
+        
+        <div class="quiz-container">
+          <div class="quiz-progress">
+            <span id="quiz-count">0 of 4</span> questions completed
+          </div>
+
+          <div id="quiz-questions">
+            <!-- Quiz questions will be inserted by JavaScript -->
+          </div>
+
+          <div id="quiz-completion" style="display: none; text-align: center; padding: 40px 0;">
+            <h3 style="color: var(--color-ucd-green);">🎉 Great job!</h3>
+            <p>You've completed the quiz. Now let's explore the key takeaways and how to apply this knowledge.</p>
+            <button class="btn btn-primary" onclick="goToSection('takeaways')">See Key Takeaways</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Takeaways -->
+    <section class="section" id="section-takeaways">
+      <div class="section-content">
+        <h2>Key Takeaways & Application</h2>
+        
+        <div class="takeaways-grid">
+          <div class="takeaway-card">
+            <h3>1. Pause Before Judging</h3>
+            <p>When you notice a negative interpretation of someone's behavior, pause and ask: "What else could explain this?" Often there are situational factors we don't see.</p>
+          </div>
+
+          <div class="takeaway-card">
+            <h3>2. Consider Intent AND Impact</h3>
+            <p>Even if someone didn't mean harm, impact still matters. You can acknowledge good intent while also addressing the effect of their words or actions.</p>
+          </div>
+
+          <div class="takeaway-card">
+            <h3>3. Ask Questions When Unclear</h3>
+            <p>In ambiguous situations, ask clarifying questions rather than filling in the gaps with your own assumptions. "I noticed you were quiet in the meeting—how are you feeling?"</p>
+          </div>
+
+          <div class="takeaway-card">
+            <h3>4. Recognize Your Automatic Biases</h3>
+            <p>Your brain is wired to make quick judgments. This helped our ancestors survive, but in modern social situations, it can lead to misunderstandings. Build awareness.</p>
+          </div>
+        </div>
+
+        <div class="reflection-box">
+          <h3>Take a Moment to Reflect</h3>
+          <p class="reflection-prompt">Think of a recent social misunderstanding you experienced or witnessed. How could understanding attribution theory have helped prevent it?</p>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin: 0;">There's no right answer—just an opportunity to apply what you've learned.</p>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-secondary" onclick="goToSection('quiz')">Back</button>
+          <button class="btn btn-primary" onclick="goToSection('welcome')">Start Over</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Data
+    const scenarios = [
+      {
+        id: 1,
+        title: "The Workplace Comment",
+        situation: "During a team meeting, a colleague says to you: 'Wow, your English is so good! Where are you really from?'",
+        what_happened: "A compliment about language skills with a curious question",
+        common_attribution: "They're just being nice and curious",
+        impact_experienced: "Othered, questioned belonging, assumed to be a foreigner",
+        why_gap: "The person asking assumes good intent and just wants to know more. But the recipient interprets it as being seen as 'not from here' despite being born here, activating stereotype of outsider.",
+        learning_point: "Intent ≠ Impact. Good intentions don't erase the effect of our words."
+      },
+      {
+        id: 2,
+        title: "The Social Media Post",
+        situation: "Your friend posts a picture wearing a hairstyle inspired by another culture with caption: 'Trying something fun and different today!'",
+        what_happened: "A selfie shared with enthusiasm",
+        common_attribution: "They're just experimenting with fashion, appreciating other cultures",
+        impact_experienced: "Some see cultural appreciation, others see appropriation—the hairstyle carries history and meaning",
+        why_gap: "The poster might genuinely see this as harmless, following trends. But for others, the hairstyle represents cultural identity, sacred traditions, or a history of marginalization. Context and power dynamics matter.",
+        learning_point: "We often attribute ambiguous actions to good intent when context is unclear. Structural inequities and power dynamics shape impact more than intention."
+      },
+      {
+        id: 3,
+        title: "The Group Project",
+        situation: "During a group project brainstorm, someone sits quietly for most of the meeting. Later, they text: 'I had lots of ideas but felt awkward jumping in.'",
+        what_happened: "A quiet team member didn't participate verbally",
+        common_attribution: "They don't have ideas, aren't invested, or don't know the material",
+        impact_experienced: "Felt excluded, stereotyped as quiet/shy, ideas weren't valued",
+        why_gap: "The team made a quick judgment based on behavior (silence). They applied the Fundamental Attribution Error—assuming personality over situation. They didn't consider that group dynamics, power structures, or communication styles affect participation.",
+        learning_point: "We default to explaining behavior as a personality trait (they're quiet) rather than situation (maybe they're processing, or group dynamics make it hard to speak up)."
+      },
+      {
+        id: 4,
+        title: "The Canceled Plans",
+        situation: "A friend cancels last-minute plans three times in a row. You assume they don't value the friendship.",
+        what_happened: "Your friend cancels, again",
+        common_attribution: "They're flaky, don't care about our friendship, are selfish",
+        impact_experienced: "Friend feels hurt and misunderstood, worried you think they don't care",
+        why_gap: "You didn't have full information (mental health struggles, family crisis, work stress). Your automatic brain filled in the gaps with a narrative that confirmed existing beliefs. Your friend's behavior had impact on you, but intent wasn't what you thought.",
+        learning_point: "When information is ambiguous, our beliefs and motivations fill in the gaps. We should pause and consider: What else could explain this?"
+      }
+    ];
+
+    const quizQuestions = [
+      {
+        id: 1,
+        question: "Which of the following is an example of the Fundamental Attribution Error?",
+        options: [
+          { text: "Assuming someone is late to work because traffic was bad", letter: "a" },
+          { text: "Assuming someone is careless because they were late to work once", letter: "b" },
+          { text: "Assuming someone intentionally planned something fun", letter: "c" },
+          { text: "Assuming someone gave helpful advice", letter: "d" }
+        ],
+        correct: "b",
+        explanation: "The Fundamental Attribution Error is overestimating personality and underestimating situation. Assuming they're careless (personality) ignores the possibility of traffic, personal emergency, or other situational factors."
+      },
+      {
+        id: 2,
+        question: "In an ambiguous social situation, what typically happens to fill in the missing information?",
+        options: [
+          { text: "We ask clarifying questions and wait for facts", letter: "a" },
+          { text: "Our existing beliefs and motivations create explanations", letter: "b" },
+          { text: "We always assume positive intent", letter: "c" },
+          { text: "We always assume negative intent", letter: "d" }
+        ],
+        correct: "b",
+        explanation: "When information is unclear, our brains automatically fill gaps using our existing beliefs. This can lead to biased attributions that confirm what we already think."
+      },
+      {
+        id: 3,
+        question: "What is the relationship between intent and impact?",
+        options: [
+          { text: "Good intent always creates positive impact", letter: "a" },
+          { text: "Impact doesn't matter if intent was good", letter: "b" },
+          { text: "Intent and impact can be misaligned, and impact often matters more to the person affected", letter: "c" },
+          { text: "They are the same thing", letter: "d" }
+        ],
+        correct: "c",
+        explanation: "Someone can have good intentions but still cause harm. From the person affected's perspective, impact is what they experience. This is why 'I didn't mean it' doesn't erase harm."
+      },
+      {
+        id: 4,
+        question: "How can we reduce attribution errors in social situations?",
+        options: [
+          { text: "Always assume people are good", letter: "a" },
+          { text: "Deliberately slow down and consider situational factors we might not know about", letter: "b" },
+          { text: "Never trust our first impressions", letter: "c" },
+          { text: "Always ask what someone meant before judging", letter: "d" }
+        ],
+        correct: "b",
+        explanation: "Attribution errors happen automatically. Reducing them requires deliberate, controlled processing—slowing down and asking: 'What else might explain this? What situation might they be in?'"
+      }
+    ];
+
+    // Initialize
+    function init() {
+      renderScenarios();
+      renderQuiz();
+    }
+
+    // Render scenarios
+    function renderScenarios() {
+      const grid = document.getElementById('scenarios-grid');
+      grid.innerHTML = scenarios.map(scenario => `
+        <div class="scenario-card" id="scenario-${scenario.id}" onclick="toggleScenario(${scenario.id})">
+          <h3>${scenario.title}</h3>
+          <p><strong>Situation:</strong> "${scenario.situation}"</p>
+          
+          <div class="scenario-content">
+            <div class="scenario-section">
+              <h4>📌 What Happened</h4>
+              <p>${scenario.what_happened}</p>
+            </div>
+
+            <div class="scenario-section">
+              <h4>🤔 Common Attribution</h4>
+              <p>${scenario.common_attribution}</p>
+            </div>
+
+            <div class="scenario-section impact">
+              <h4>💔 Impact Experienced</h4>
+              <p>${scenario.impact_experienced}</p>
+            </div>
+
+            <div class="scenario-section">
+              <h4>🔍 Why the Gap Exists</h4>
+              <p>${scenario.why_gap}</p>
+            </div>
+
+            <div class="scenario-section insight">
+              <h4>💡 Learning Point</h4>
+              <p><strong>${scenario.learning_point}</strong></p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Toggle scenario
+    function toggleScenario(id) {
+      const card = document.getElementById(`scenario-${id}`);
+      card.classList.toggle('expanded');
+    }
+
+    // Render quiz
+    function renderQuiz() {
+      const container = document.getElementById('quiz-questions');
+      container.innerHTML = quizQuestions.map((q, idx) => `
+        <div class="quiz-question" id="question-${q.id}">
+          <h3>Question ${idx + 1}: ${q.question}</h3>
+          <div class="quiz-options">
+            ${q.options.map(opt => `
+              <button class="quiz-option" onclick="answerQuestion(${q.id}, '${opt.letter}')">
+                <strong>${opt.letter})</strong> ${opt.text}
+              </button>
+            `).join('')}
+          </div>
+          <div class="quiz-feedback" id="feedback-${q.id}">
+            <strong>Explanation:</strong> <span id="explanation-${q.id}"></span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Answer question
+    function answerQuestion(questionId, selectedLetter) {
+      const question = quizQuestions.find(q => q.id === questionId);
+      const questionEl = document.getElementById(`question-${questionId}`);
+      const feedbackEl = document.getElementById(`feedback-${questionId}`);
+      const explanationEl = document.getElementById(`explanation-${questionId}`);
+      const isCorrect = selectedLetter === question.correct;
+
+      // Update UI
+      questionEl.querySelectorAll('.quiz-option').forEach(btn => {
+        btn.classList.remove('selected', 'correct', 'incorrect');
+        if (btn.textContent.includes(selectedLetter + ')')) {
+          btn.classList.add('selected', isCorrect ? 'correct' : 'incorrect');
+        }
+      });
+
+      // Show feedback
+      feedbackEl.classList.add('show', isCorrect ? 'correct' : 'incorrect');
+      explanationEl.textContent = question.explanation;
+
+      // Mark question as answered
+      questionEl.classList.add('answered');
+
+      // Update progress
+      updateQuizProgress();
+    }
+
+    // Update quiz progress
+    function updateQuizProgress() {
+      const answered = document.querySelectorAll('.quiz-question.answered').length;
+      document.getElementById('quiz-count').textContent = `${answered} of ${quizQuestions.length}`;
+
+      if (answered === quizQuestions.length) {
+        setTimeout(() => {
+          document.getElementById('quiz-questions').style.display = 'none';
+          document.getElementById('quiz-completion').style.display = 'block';
+        }, 500);
+      }
+    }
+
+    // Navigation
+    function goToSection(sectionName) {
+      // Hide all sections
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      
+      // Show target section
+      const targetSection = document.getElementById(`section-${sectionName}`);
+      if (targetSection) {
+        targetSection.classList.add('active');
+        window.scrollTo(0, 0);
+        updateProgressIndicator(sectionName);
+      }
+    }
+
+    // Update progress indicator
+    function updateProgressIndicator(sectionName) {
+      const sectionMap = {
+        'welcome': 'Section 1',
+        'scenarios': 'Section 2',
+        'theory': 'Section 3',
+        'quiz': 'Section 4',
+        'takeaways': 'Section 5'
+      };
+      document.getElementById('progress-text').textContent = sectionMap[sectionName] || 'Section 1';
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
